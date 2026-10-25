@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-black select-none">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hayden</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --bg-color: #000000;
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+            --card-bg: rgba(9, 9, 11, 0.4);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --accent-glow: rgba(255, 255, 255, 0.15);
+            --accent-color: #ffffff;
+        }
+
+        body.theme-light {
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-sub: #475569;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --glass-bg: rgba(0, 0, 0, 0.04);
+            --glass-hover: rgba(0, 0, 0, 0.08);
+            --glass-border: rgba(0, 0, 0, 0.15);
+            --accent-glow: rgba(0, 0, 0, 0.1);
+            --accent-color: #0f172a;
+        }
+
+        body.theme-halloween {
+            --bg-color: #0d0514;
+            --text-main: #ff9d00;
+            --text-sub: #d97706;
+            --card-bg: rgba(26, 10, 36, 0.6);
+            --card-border: rgba(255, 122, 0, 0.2);
+            --glass-bg: rgba(255, 122, 0, 0.08);
+            --glass-hover: rgba(255, 122, 0, 0.16);
+            --glass-border: rgba(255, 140, 0, 0.3);
+            --accent-glow: rgba(255, 122, 0, 0.35);
+            --accent-color: #ff9d00;
+        }
+
+        /* CUSTOM CURSORS */
+        body, body *, button, a {
+            cursor: url('https://i.postimg.cc/vDZ3CL1Y/image-removebg-preview.png') 16 16, auto !important;
+        }
+
+        body.theme-halloween, body.theme-halloween *, body.theme-halloween button, body.theme-halloween a {
+            cursor: url('https://imgs.search.brave.com/hIGrnG_kSpJ4DofxTO63Wqy6T3idjm9VN-dCCz1nT3c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzEv/NDAxLzAyMS9zbWFs/bC9wdW1wa2luLWZh/Y2UtaGFsbG93ZWVu/LWVsZW1lbnQtY2xp/cGFydC1kaWdpdGFs/LXBhaW50aW5nLXdh/dGVyY29sb3ItZnJl/ZS1wbmcucG5n') 16 16, auto !important;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* macOS Liquid Glass Button */
+        .liquid-glass-btn {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(220%);
+            -webkit-backdrop-filter: blur(30px) saturate(220%);
+            border-radius: 9999px;
+            padding: 1.25rem 4.5rem;
+            color: var(--text-main);
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                0 10px 30px rgba(0, 0, 0, 0.2),
+                inset 0 1px 1.5px rgba(255, 255, 255, 0.4),
+                inset 0 -2px 6px rgba(0, 0, 0, 0.5);
+
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .liquid-glass-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            padding: 1.5px;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.6) 0%,
+                rgba(255, 255, 255, 0.1) 40%,
+                rgba(0, 0, 0, 0.05) 60%,
+                rgba(255, 255, 255, 0.3) 100%
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .liquid-glass-btn:hover {
+            background: var(--glass-hover);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 40px 80px rgba(0, 0, 0, 0.5),
+                0 0 40px var(--accent-glow);
+        }
+
+        .liquid-glass-btn:active {
+            transform: scale(0.96) !important;
+        }
+
+        /* Glass Utility Buttons */
+        .glass-btn {
+            position: relative;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px) saturate(200%);
+            -webkit-backdrop-filter: blur(20px) saturate(200%);
+            border-radius: 9999px;
+            padding: 0.6rem 1.4rem;
+            color: var(--text-main);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-btn:hover {
+            background: var(--glass-hover);
+            transform: translateY(-1px);
+        }
+
+        .glass-tab-btn {
+            opacity: 0.6;
+        }
+
+        .glass-tab-btn:hover {
+            opacity: 0.9;
+        }
+
+        .glass-tab-btn.active {
+            opacity: 1;
+            background: var(--glass-hover);
+            border-color: var(--accent-color);
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.4),
+                0 0 20px var(--accent-glow);
+        }
+
+        /* Dropdown Glass Menu */
+        .glass-menu {
+            background: var(--card-bg);
+            backdrop-filter: blur(25px) saturate(200%);
+            -webkit-backdrop-filter: blur(25px) saturate(200%);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Smooth Content Fade Animation */
+        .content-fade {
+            animation: contentFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes contentFadeIn {
+            from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0px); }
+        }
+
+        /* Dynamic Text Glow / Shimmer Effect */
+        .text-shimmer {
+            color: var(--text-main);
+            transition: color 0.5s ease, text-shadow 0.5s ease;
+        }
+
+        body.theme-halloween .text-shimmer {
+            text-shadow: 0 0 20px rgba(255, 122, 0, 0.6), 0 0 40px rgba(255, 122, 0, 0.3);
+        }
+
+        /* Stage Transition Animations */
+        .fade-out {
+            animation: fadeOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .fade-in {
+            animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1); filter: blur(0px); }
+            100% { opacity: 0; transform: scale(1.1); filter: blur(20px); pointer-events: none; }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(10px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
+        }
+
+        /* Falling Pumpkins Canvas */
+        #pumpkinCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 5;
+            display: none;
+        }
+    </style>
+</head>
+<body class="h-full flex items-center justify-center p-4">
+
+    <!-- CANVAS FOR FALLING PUMPKINS -->
+    <canvas id="pumpkinCanvas"></canvas>
+
+    <!-- TOP RIGHT THEME CONTROLLER -->
+    <div class="fixed top-6 right-6 z-30">
+        <button id="themesBtn" onclick="toggleThemeMenu()" class="glass-btn flex items-center gap-2">
+            <span>Themes</span>
+            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+
+        <!-- THEME DROPDOWN -->
+        <div id="themeMenu" class="hidden absolute right-0 mt-3 w-56 rounded-2xl p-2 glass-menu transition-all">
+            <button onclick="setTheme('dark')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-white/10 flex items-center justify-between">
+                <span>Dark Mode</span>
+                <span id="check-dark" class="text-xs opacity-80">✓</span>
+            </button>
+            <button onclick="setTheme('light')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-white/10 flex items-center justify-between">
+                <span>Light Mode</span>
+                <span id="check-light" class="text-xs opacity-80 hidden">✓</span>
+            </button>
+            <button onclick="setTheme('halloween')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-orange-500/20 text-orange-400 font-medium flex items-center justify-between">
+                <span>Halloween 🎃</span>
+                <span id="check-halloween" class="text-xs opacity-80 hidden">✓</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- INITIAL STAGE: ENTER BUTTON -->
+    <div id="landingStage" class="fixed inset-0 flex items-center justify-center z-20">
+        <button id="enterBtn" onclick="triggerEnter()" class="liquid-glass-btn">
+            <span class="text-shimmer">Enter</span>
+        </button>
+    </div>
+
+    <!-- MAIN PROFILE STAGE: HAYDEN -->
+    <main id="profileStage" class="hidden text-center z-10 flex flex-col items-center justify-center max-w-3xl px-6 py-12">
+        <h1 class="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight text-shimmer mb-3 sm:mb-4">
+            Hayden
+        </h1>
+        <p id="subTitleText" class="text-base sm:text-xl md:text-2xl font-light tracking-widest uppercase mb-10 sm:mb-12 transition-colors duration-500" style="color: var(--text-sub);">
+            coder, writer, editor and youtuber
+        </p>
+
+        <!-- TAB NAVIGATION BUTTONS -->
+        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 w-full">
+            <button id="tabAboutBtn" onclick="switchTab('about')" class="glass-btn glass-tab-btn active">
+                About Me
+            </button>
+            <button id="tabWorkingBtn" onclick="switchTab('working')" class="glass-btn glass-tab-btn">
+                What I'm Working On
+            </button>
+        </div>
+
+        <!-- DYNAMIC CONTENT CONTAINER -->
+        <div class="max-w-xl w-full text-left p-6 sm:p-8 rounded-3xl backdrop-blur-md min-h-[140px] flex items-center shadow-2xl transition-all duration-500" style="background-color: var(--card-bg); border: 1px solid var(--card-border);">
+            <!-- ABOUT ME CONTENT -->
+            <div id="aboutContent" class="content-fade w-full">
+                <p class="text-base sm:text-lg leading-relaxed font-normal opacity-90">
+                    Hey, I’m Hayden—a 17-year-old developer currently studying animation and game development in college, with my sights set on university next. Outside of code, I’m a YouTuber, writer, and video editor.
+                </p>
+            </div>
+
+            <!-- WHAT I'M WORKING ON CONTENT -->
+            <div id="workingContent" class="hidden content-fade w-full">
+                <p class="text-base sm:text-lg leading-relaxed font-normal opacity-90">
+                    I’m currently building a custom Discord alternative designed to revive the classic Discord experience. It brings back popular features like animated banners, animated profile pictures, and custom perks completely free—without any paywalls. The entire project runs on free tier architecture, leveraging Cloudinary for media storage and Firebase for backend and hosting.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Enter Page Transition
+        function triggerEnter() {
+            const landingStage = document.getElementById('landingStage');
+            const profileStage = document.getElementById('profileStage');
+
+            landingStage.classList.add('fade-out');
+
+            setTimeout(() => {
+                landingStage.style.display = 'none';
+                profileStage.classList.remove('hidden');
+                profileStage.classList.add('fade-in');
+            }, 600);
+        }
+
+        // Tab Switching
+        function switchTab(tab) {
+            const aboutBtn = document.getElementById('tabAboutBtn');
+            const workingBtn = document.getElementById('tabWorkingBtn');
+            const aboutContent = document.getElementById('aboutContent');
+            const workingContent = document.getElementById('workingContent');
+
+            if (tab === 'about') {
+                aboutBtn.classList.add('active');
+                workingBtn.classList.remove('active');
+
+                workingContent.classList.add('hidden');
+                aboutContent.classList.remove('hidden', 'content-fade');
+                void aboutContent.offsetWidth; // Reflow
+                aboutContent.classList.add('content-fade');
+            } else if (tab === 'working') {
+                workingBtn.classList.add('active');
+                aboutBtn.classList.remove('active');
+
+                aboutContent.classList.add('hidden');
+                workingContent.classList.remove('hidden', 'content-fade');
+                void workingContent.offsetWidth; // Reflow
+                workingContent.classList.add('content-fade');
+            }
+        }
+
+        // Themes System
+        function toggleThemeMenu() {
+            const menu = document.getElementById('themeMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', (e) => {
+            const btn = document.getElementById('themesBtn');
+            const menu = document.getElementById('themeMenu');
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        function setTheme(theme) {
+            document.body.className = 'h-full flex items-center justify-center p-4';
+            
+            document.getElementById('check-dark').classList.add('hidden');
+            document.getElementById('check-light').classList.add('hidden');
+            document.getElementById('check-halloween').classList.add('hidden');
+
+            const canvas = document.getElementById('pumpkinCanvas');
+
+            if (theme === 'light') {
+                document.body.classList.add('theme-light');
+                document.getElementById('check-light').classList.remove('hidden');
+                stopPumpkinRain();
+            } else if (theme === 'halloween') {
+                document.body.classList.add('theme-halloween');
+                document.getElementById('check-halloween').classList.remove('hidden');
+                startPumpkinRain();
+            } else {
+                document.body.classList.add('theme-dark');
+                document.getElementById('check-dark').classList.remove('hidden');
+                stopPumpkinRain();
+            }
+
+            document.getElementById('themeMenu').classList.add('hidden');
+        }
+
+        /* --- FALLING PUMPKIN RAIN SYSTEM --- */
+        let canvas, ctx;
+        let animationFrameId = null;
+        let pumpkins = [];
+
+        // Image Sources
+        const img1 = new Image();
+        img1.src = 'https://www.pngall.com/wp-content/uploads/2016/05/Pumpkin-PNG-Pic.png';
+
+        const img2 = new Image();
+        img2.src = 'https://static.vecteezy.com/system/resources/thumbnails/050/475/198/small/carved-orange-pumpkin-with-smiling-face-png.png';
+
+        const loadedImages = [];
+        img1.onload = () => loadedImages.push(img1);
+        img2.onload = () => loadedImages.push(img2);
+
+        function initCanvas() {
+            canvas = document.getElementById('pumpkinCanvas');
+            ctx = canvas.getContext('2d');
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+        }
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function createPumpkin() {
+            return {
+                x: Math.random() * canvas.width,
+                y: -50 - Math.random() * 100,
+                size: Math.random() * 25 + 25, // Size between 25px and 50px
+                speedY: Math.random() * 2 + 1.5,
+                speedX: Math.sin(Math.random() * Math.PI * 2) * 0.5,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.03,
+                image: loadedImages.length > 0 ? loadedImages[Math.floor(Math.random() * loadedImages.length)] : null
+            };
+        }
+
+        function startPumpkinRain() {
+            if (!canvas) initCanvas();
+            canvas.style.display = 'block';
+
+            if (pumpkins.length === 0) {
+                for (let i = 0; i < 35; i++) {
+                    const p = createPumpkin();
+                    p.y = Math.random() * canvas.height; // Distribute initially
+                    pumpkins.push(p);
+                }
+            }
+
+            if (!animationFrameId) {
+                animatePumpkins();
+            }
+        }
+
+        function stopPumpkinRain() {
+            if (canvas) {
+                canvas.style.display = 'none';
+            }
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+        }
+
+        function animatePumpkins() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            pumpkins.forEach((p) => {
+                p.y += p.speedY;
+                p.x += Math.sin(p.y * 0.01) * 0.8;
+                p.rotation += p.rotationSpeed;
+
+                if (p.y > canvas.height + 60) {
+                    p.y = -60;
+                    p.x = Math.random() * canvas.width;
+                }
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.rotation);
+
+                if (p.image && p.image.complete && p.image.naturalWidth !== 0) {
+                    ctx.drawImage(p.image, -p.size / 2, -p.size / 2, p.size, p.size);
+                } else {
+                    // Fallback pumpkin canvas shape if images are still loading/fail
+                    ctx.beginPath();
+                    ctx.fillStyle = '#ff7a00';
+                    ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = '#228b22';
+                    ctx.fillRect(-2, -p.size / 2 - 4, 4, 6);
+                }
+
+                ctx.restore();
+            });
+
+            animationFrameId = requestAnimationFrame(animatePumpkins);
+        }
+    </script>
+</body>
+</html>
