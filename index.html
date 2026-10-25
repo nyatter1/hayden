@@ -184,6 +184,30 @@
             to { opacity: 1; transform: translateY(0); filter: blur(0px); }
         }
 
+        /* Fade Out Transition for Landing */
+        .fade-out {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        /* Fade In Transition for Profile */
+        .fade-in {
+            animation: fadeInStage 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeInStage {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="h-full flex items-center justify-center p-4 relative">
+
+    <!-- FALLING PUMPKIN CANVAS -->
+    <canvas id="pumpkinCanvas" class="fixed inset-0 pointer-events-none z-0 hidden"></canvas>
+
     <!-- TOP RIGHT THEME & AUDIO SELECTOR -->
     <div class="fixed top-6 right-6 z-30 flex items-center gap-3">
         
@@ -260,13 +284,13 @@
     <!-- STAGE 1: ENTER BUTTON -->
     <div id="landingStage" class="fixed inset-0 flex items-center justify-center z-20">
         <button id="enterBtn" onclick="triggerEnter()" class="liquid-glass-btn">
-            <span class="text-shimmer">Enter</span>
+            <span>Enter</span>
         </button>
     </div>
 
     <!-- STAGE 2: MAIN PROFILE -->
     <main id="profileStage" class="hidden text-center z-10 flex flex-col items-center justify-center max-w-3xl px-6 py-12">
-        <h1 class="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight text-shimmer mb-3 sm:mb-4">
+        <h1 class="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight mb-3 sm:mb-4">
             Hayden
         </h1>
         <p id="subTitleText" class="text-base sm:text-xl md:text-2xl font-light tracking-widest uppercase mb-10 sm:mb-12 transition-colors duration-500" style="color: var(--text-sub);">
@@ -450,14 +474,14 @@
         window.addEventListener('click', (e) => {
             const btn = document.getElementById('themesBtn');
             const menu = document.getElementById('themeMenu');
-            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+            if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
                 menu.classList.add('hidden');
             }
         });
 
         // Theme Switcher Function
         function setTheme(theme) {
-            document.body.className = 'h-full flex items-center justify-center p-4';
+            document.body.className = 'h-full flex items-center justify-center p-4 relative';
             
             document.getElementById('check-dark').classList.add('hidden');
             document.getElementById('check-light').classList.add('hidden');
@@ -499,7 +523,6 @@
                 tempCanvas.height = 32;
                 const tempCtx = tempCanvas.getContext('2d');
 
-                // Draw and scale down to 32x32 for CSS cursor standard
                 tempCtx.drawImage(img, 0, 0, 32, 32);
 
                 if (makeWhite) {
@@ -507,7 +530,6 @@
                         const imgData = tempCtx.getImageData(0, 0, 32, 32);
                         const data = imgData.data;
                         for (let i = 0; i < data.length; i += 4) {
-                            // If pixel is not fully transparent, force color to pure white (255, 255, 255)
                             if (data[i + 3] > 20) {
                                 data[i] = 255;     // Red
                                 data[i + 1] = 255; // Green
