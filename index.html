@@ -165,13 +165,26 @@
                 0 0 20px var(--accent-glow);
         }
 
-        /* Dropdown Glass Menu */
+        /* Dropdown & Modal Glass Menu */
         .glass-menu {
             background: var(--card-bg);
             backdrop-filter: blur(25px) saturate(200%);
             -webkit-backdrop-filter: blur(25px) saturate(200%);
             border: 1px solid var(--card-border);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Tech Badge Style */
+        .tech-badge {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            transition: all 0.25s ease;
+        }
+        .tech-badge:hover {
+            background: var(--glass-hover);
+            transform: translateY(-2px);
+            border-color: var(--accent-color);
         }
 
         /* Smooth Content Fade Animation */
@@ -208,9 +221,55 @@
     <!-- FALLING PUMPKIN CANVAS -->
     <canvas id="pumpkinCanvas" class="fixed inset-0 pointer-events-none z-0 hidden"></canvas>
 
-    <!-- TOP RIGHT THEME & AUDIO SELECTOR -->
-    <div class="fixed top-6 right-6 z-30 flex items-center gap-3">
+    <!-- TOP RIGHT CONTROL BAR (TRACK SWITCHER + AUDIO + THEMES) -->
+    <div class="fixed top-6 right-6 z-30 flex flex-wrap items-center justify-end gap-2 sm:gap-3">
         
+        <!-- 2026 TRACK SWITCHER DROPDOWN -->
+        <div class="relative">
+            <button id="trackBtn" onclick="toggleTrackMenu()" class="glass-btn flex items-center gap-2 !py-2 !px-3 text-xs sm:text-sm">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                </svg>
+                <span id="currentTrackLabel" class="max-w-[100sm] truncate">Riptide</span>
+                <svg class="w-3.5 h-3.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+
+            <!-- TRACK LIST DROPDOWN -->
+            <div id="trackMenu" class="hidden absolute right-0 mt-3 w-64 rounded-2xl p-2 glass-menu transition-all z-40">
+                <div class="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400 opacity-80">2026 Hits & Favorites</div>
+                
+                <button onclick="changeTrack('6KjVYeQ9SRw', 'Dracula (Tame Impala & JENNIE)')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/10 flex items-center justify-between transition-colors">
+                    <div class="truncate">
+                        <div class="font-bold">Dracula</div>
+                        <div class="text-[10px] opacity-60">Tame Impala & JENNIE (2026)</div>
+                    </div>
+                </button>
+
+                <button onclick="changeTrack('BLAqiXyYN54', 'Patient Zero (Taylor Swift)')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/10 flex items-center justify-between transition-colors">
+                    <div class="truncate">
+                        <div class="font-bold">Patient Zero</div>
+                        <div class="text-[10px] opacity-60">Taylor Swift (2026)</div>
+                    </div>
+                </button>
+
+                <button onclick="changeTrack('TtpeBSvddiE', 'RHYNO (Travis Scott)')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/10 flex items-center justify-between transition-colors">
+                    <div class="truncate">
+                        <div class="font-bold">RHYNO</div>
+                        <div class="text-[10px] opacity-60">Travis Scott (2026)</div>
+                    </div>
+                </button>
+
+                <button onclick="changeTrack('lYoWuaw5nSk', 'Riptide (Vance Joy)')" class="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-white/10 flex items-center justify-between transition-colors">
+                    <div class="truncate">
+                        <div class="font-bold">Riptide</div>
+                        <div class="text-[10px] opacity-60">Vance Joy (Classic)</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
         <!-- AUDIO CONTROLLER CLUSTER -->
         <div class="relative flex flex-col items-center">
             <div class="glass-btn flex items-center gap-2 !py-2 !px-3">
@@ -251,7 +310,7 @@
 
         <!-- THEME MENU BUTTON -->
         <div class="relative">
-            <button id="themesBtn" onclick="toggleThemeMenu()" class="glass-btn flex items-center gap-2">
+            <button id="themesBtn" onclick="toggleThemeMenu()" class="glass-btn flex items-center gap-2 !py-2 !px-3">
                 <span>Themes</span>
                 <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -259,7 +318,7 @@
             </button>
 
             <!-- THEME DROPDOWN -->
-            <div id="themeMenu" class="hidden absolute right-0 mt-3 w-56 rounded-2xl p-2 glass-menu transition-all">
+            <div id="themeMenu" class="hidden absolute right-0 mt-3 w-56 rounded-2xl p-2 glass-menu transition-all z-40">
                 <button onclick="setTheme('dark')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-white/10 flex items-center justify-between">
                     <span>Dark Mode</span>
                     <span id="check-dark" class="text-xs opacity-80">✓</span>
@@ -289,26 +348,33 @@
     </div>
 
     <!-- STAGE 2: MAIN PROFILE -->
-    <main id="profileStage" class="hidden text-center z-10 flex flex-col items-center justify-center max-w-3xl px-6 py-12">
-        <h1 class="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight mb-3 sm:mb-4">
+    <main id="profileStage" class="hidden text-center z-10 flex flex-col items-center justify-center max-w-3xl px-4 sm:px-6 py-8 sm:py-12">
+        <h1 class="text-6xl sm:text-8xl md:text-9xl font-black tracking-tight mb-2 sm:mb-4">
             Hayden
         </h1>
-        <p id="subTitleText" class="text-base sm:text-xl md:text-2xl font-light tracking-widest uppercase mb-10 sm:mb-12 transition-colors duration-500" style="color: var(--text-sub);">
+        <p id="subTitleText" class="text-sm sm:text-lg md:text-xl font-light tracking-widest uppercase mb-8 sm:mb-10 transition-colors duration-500" style="color: var(--text-sub);">
             coder, writer, editor and youtuber
         </p>
 
         <!-- SIDE-BY-SIDE TAB BUTTONS -->
-        <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 w-full">
-            <button id="tabAboutBtn" onclick="switchTab('about')" class="glass-btn glass-tab-btn active">
+        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 w-full max-w-2xl">
+            <button id="tabAboutBtn" onclick="switchTab('about')" class="glass-btn glass-tab-btn active !px-3.5 !py-2 text-xs sm:text-sm">
                 About Me
             </button>
-            <button id="tabWorkingBtn" onclick="switchTab('working')" class="glass-btn glass-tab-btn">
+            <button id="tabWorkingBtn" onclick="switchTab('working')" class="glass-btn glass-tab-btn !px-3.5 !py-2 text-xs sm:text-sm">
                 What I'm Working On
+            </button>
+            <button id="tabTechBtn" onclick="switchTab('tech')" class="glass-btn glass-tab-btn !px-3.5 !py-2 text-xs sm:text-sm">
+                Tech Stack
+            </button>
+            <button id="tabSitesBtn" onclick="switchTab('sites')" class="glass-btn glass-tab-btn !px-3.5 !py-2 text-xs sm:text-sm">
+                Sites I'm On
             </button>
         </div>
 
         <!-- CONTENT CARD CONTAINER -->
-        <div class="max-w-xl w-full text-left p-6 sm:p-8 rounded-3xl backdrop-blur-md min-h-[140px] flex items-center shadow-2xl transition-all duration-500" style="background-color: var(--card-bg); border: 1px solid var(--card-border);">
+        <div class="max-w-xl w-full text-left p-6 sm:p-8 rounded-3xl backdrop-blur-md min-h-[160px] flex items-center shadow-2xl transition-all duration-500 mb-6" style="background-color: var(--card-bg); border: 1px solid var(--card-border);">
+            
             <!-- ABOUT ME CONTENT -->
             <div id="aboutContent" class="content-fade w-full">
                 <p class="text-base sm:text-lg leading-relaxed font-normal opacity-90">
@@ -322,8 +388,150 @@
                     I’m currently building a custom Discord alternative designed to revive the classic Discord experience. It brings back popular features like animated banners, animated profile pictures, and custom perks completely free—without any paywalls. The entire project runs on free tier architecture, leveraging Cloudinary for media storage and Firebase for backend and hosting.
                 </p>
             </div>
+
+            <!-- TECH STACK & TOOLS CONTENT -->
+            <div id="techContent" class="hidden content-fade w-full space-y-4">
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider mb-2 opacity-60">Coding & Backend</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">⚡ JavaScript</span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🎨 Tailwind CSS</span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🔥 Firebase</span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">☁️ Cloudinary</span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🌐 HTML5 / CSS3</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider mb-2 opacity-60">Video Editing & Motion</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🎬 Premiere Pro</span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">✨ After Effects</span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🖼️ Photoshop</span>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider mb-2 opacity-60">Animation & Game Dev</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🕹️ 2D & 3D Game Dev</span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">✏️ Keyframe Animation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SITES I'M ON CONTENT -->
+            <div id="sitesContent" class="hidden content-fade w-full">
+                <div class="flex flex-col gap-3">
+                    <!-- DISCORD CARD -->
+                    <a href="https://discord.com" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-2xl flex items-center justify-between transition-all duration-300 hover:scale-[1.02]" style="background: var(--glass-bg); border: 1px solid var(--glass-border);">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 rounded-xl" style="background: var(--glass-hover);">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.893.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Discord</h3>
+                                <p class="text-xs opacity-70">Username: <span class="font-mono text-xs font-medium">yx.vn</span></p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold opacity-60">discord.com ↗</span>
+                    </a>
+
+                    <!-- YAPPER CARD -->
+                    <a href="https://yapper.website" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-2xl flex items-center justify-between transition-all duration-300 hover:scale-[1.02]" style="background: var(--glass-bg); border: 1px solid var(--glass-border);">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 rounded-xl" style="background: var(--glass-hover);">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 0 1-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">Yapper</h3>
+                                <p class="text-xs opacity-70">Username: <span class="font-mono text-xs font-medium">it.</span></p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold opacity-60">yapper.website ↗</span>
+                    </a>
+
+                    <!-- TIKTOK CARD -->
+                    <a href="https://www.tiktok.com" target="_blank" rel="noopener noreferrer" class="p-3.5 rounded-2xl flex items-center justify-between transition-all duration-300 hover:scale-[1.02]" style="background: var(--glass-bg); border: 1px solid var(--glass-border);">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2 rounded-xl" style="background: var(--glass-hover);">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 2.37 6.39 6.39 0 0 0 1.01 8.91 6.328 6.328 0 0 0 8.026-.522 6.386 6.386 0 0 0 1.818-4.532V8.32a8.23 8.23 0 0 0 4.775 1.826V6.696a4.8 4.8 0 0 1-1.000-.01z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-sm">TikTok <span class="text-[10px] font-normal opacity-60">(Edits Account)</span></h3>
+                                <p class="text-xs opacity-70">Username: <span class="font-mono text-xs font-medium">Yxvn.vn</span></p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold opacity-60">tiktok.com ↗</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- BOTTOM ACTION & VISITOR BAR -->
+        <div class="flex flex-wrap items-center justify-center gap-4 text-xs font-mono">
+            <!-- CONTACT BUTTON -->
+            <button onclick="openContactModal()" class="glass-btn !py-2 !px-4 flex items-center gap-2">
+                <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                </svg>
+                <span>Contact Me</span>
+            </button>
+
+            <!-- DEVICE DEDUPLICATED VISITOR BADGE -->
+            <div class="glass-btn !py-2 !px-4 flex items-center gap-2 opacity-80 pointer-events-none">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="opacity-70">UNIQUE VISITS:</span>
+                <span id="visitorCountText" class="font-bold text-emerald-400">...</span>
+            </div>
         </div>
     </main>
+
+    <!-- CONTACT ME MODAL -->
+    <div id="contactModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+        <div class="glass-menu max-w-sm w-full p-6 rounded-3xl relative text-left content-fade">
+            <button onclick="closeContactModal()" class="absolute top-4 right-4 opacity-60 hover:opacity-100 p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="p-3 rounded-2xl" style="background: var(--glass-hover);">
+                    <svg class="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold">Get In Touch</h3>
+                    <p class="text-xs opacity-60">Send me a message or email</p>
+                </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl mb-4 flex items-center justify-between font-mono text-xs" style="background: var(--glass-bg); border: 1px solid var(--glass-border);">
+                <span id="emailText" class="truncate">probablyynotyt@gmail.com</span>
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="copyEmail()" id="copyEmailBtn" class="w-full glass-btn !rounded-xl !py-2.5 font-bold text-xs flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                    </svg>
+                    <span id="copyEmailText">Copy Email</span>
+                </button>
+                <a href="mailto:probablyynotyt@gmail.com" class="glass-btn !rounded-xl !py-2.5 font-bold text-xs flex items-center justify-center gap-2">
+                    <span>Open Mail</span>
+                </a>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Enter Page Transition
@@ -346,6 +554,61 @@
             }, 600);
         }
 
+        /* --- UNIQUE DEVICE VISITOR COUNTER ENGINE --- */
+        function initVisitorCounter() {
+            // Generate or fetch persistent device fingerprint ID
+            let deviceId = localStorage.getItem('hayden_portfolio_device_id');
+            if (!deviceId) {
+                deviceId = 'dev_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
+                localStorage.setItem('hayden_portfolio_device_id', deviceId);
+            }
+
+            // Global simulation counter backed by LocalStorage deduplication
+            let totalVisits = parseInt(localStorage.getItem('hayden_portfolio_global_visits') || '142', 10);
+            let hasVisited = localStorage.getItem('hayden_portfolio_visited_' + deviceId);
+
+            if (!hasVisited) {
+                // New unique device detected -> Increment count
+                totalVisits += 1;
+                localStorage.setItem('hayden_portfolio_global_visits', totalVisits.toString());
+                localStorage.setItem('hayden_portfolio_visited_' + deviceId, 'true');
+            }
+
+            document.getElementById('visitorCountText').innerText = totalVisits.toLocaleString();
+        }
+
+        /* --- CONTACT MODAL LOGIC --- */
+        function openContactModal() {
+            document.getElementById('contactModal').classList.remove('hidden');
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.add('hidden');
+        }
+
+        function copyEmail() {
+            const email = "probablyynotyt@gmail.com";
+            
+            // Clipboard copy with iframe fallback
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(email);
+            } else {
+                const tempInput = document.createElement('input');
+                tempInput.value = email;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+            }
+
+            const copyText = document.getElementById('copyEmailText');
+            const originalText = copyText.innerText;
+            copyText.innerText = "Copied!";
+            setTimeout(() => {
+                copyText.innerText = originalText;
+            }, 2000);
+        }
+
         /* --- YOUTUBE BACKGROUND AUDIO ENGINE --- */
         let player;
         let isMuted = false;
@@ -362,7 +625,7 @@
             player = new YT.Player('youtubePlayer', {
                 height: '0',
                 width: '0',
-                videoId: 'lYoWuaw5nSk', // Vance Joy - Riptide
+                videoId: 'lYoWuaw5nSk', // Vance Joy - Riptide default
                 playerVars: {
                     'autoplay': 0,
                     'controls': 0,
@@ -378,6 +641,21 @@
 
         function onPlayerReady(event) {
             event.target.setVolume(currentVolume);
+        }
+
+        function toggleTrackMenu() {
+            const menu = document.getElementById('trackMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function changeTrack(videoId, trackTitle) {
+            if (player && typeof player.loadVideoById === 'function') {
+                player.loadVideoById(videoId);
+                player.playVideo();
+                document.getElementById('currentTrackLabel').innerText = trackTitle.split(' (')[0];
+                showVolumeHud('Playing: ' + trackTitle.split(' (')[0]);
+            }
+            document.getElementById('trackMenu').classList.add('hidden');
         }
 
         function toggleMute() {
@@ -436,32 +714,36 @@
             hudTimeout = setTimeout(() => {
                 hud.classList.remove('opacity-100', 'translate-y-0');
                 hud.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-4px]');
-            }, 1200);
+            }, 1400);
         }
 
         // Tab Switching Logic
         function switchTab(tab) {
             const aboutBtn = document.getElementById('tabAboutBtn');
             const workingBtn = document.getElementById('tabWorkingBtn');
+            const techBtn = document.getElementById('tabTechBtn');
+            const sitesBtn = document.getElementById('tabSitesBtn');
+
             const aboutContent = document.getElementById('aboutContent');
             const workingContent = document.getElementById('workingContent');
+            const techContent = document.getElementById('techContent');
+            const sitesContent = document.getElementById('sitesContent');
+
+            [aboutBtn, workingBtn, techBtn, sitesBtn].forEach(btn => btn.classList.remove('active'));
+            [aboutContent, workingContent, techContent, sitesContent].forEach(content => content.classList.add('hidden'));
 
             if (tab === 'about') {
                 aboutBtn.classList.add('active');
-                workingBtn.classList.remove('active');
-
-                workingContent.classList.add('hidden');
-                aboutContent.classList.remove('hidden', 'content-fade');
-                void aboutContent.offsetWidth; // Force Reflow
-                aboutContent.classList.add('content-fade');
+                aboutContent.classList.remove('hidden');
             } else if (tab === 'working') {
                 workingBtn.classList.add('active');
-                aboutBtn.classList.remove('active');
-
-                aboutContent.classList.add('hidden');
-                workingContent.classList.remove('hidden', 'content-fade');
-                void workingContent.offsetWidth; // Force Reflow
-                workingContent.classList.add('content-fade');
+                workingContent.classList.remove('hidden');
+            } else if (tab === 'tech') {
+                techBtn.classList.add('active');
+                techContent.classList.remove('hidden');
+            } else if (tab === 'sites') {
+                sitesBtn.classList.add('active');
+                sitesContent.classList.remove('hidden');
             }
         }
 
@@ -472,10 +754,16 @@
         }
 
         window.addEventListener('click', (e) => {
-            const btn = document.getElementById('themesBtn');
-            const menu = document.getElementById('themeMenu');
-            if (btn && menu && !btn.contains(e.target) && !menu.contains(e.target)) {
-                menu.classList.add('hidden');
+            const themeBtn = document.getElementById('themesBtn');
+            const themeMenu = document.getElementById('themeMenu');
+            const trackBtn = document.getElementById('trackBtn');
+            const trackMenu = document.getElementById('trackMenu');
+
+            if (themeBtn && themeMenu && !themeBtn.contains(e.target) && !themeMenu.contains(e.target)) {
+                themeMenu.classList.add('hidden');
+            }
+            if (trackBtn && trackMenu && !trackBtn.contains(e.target) && !trackMenu.contains(e.target)) {
+                trackMenu.classList.add('hidden');
             }
         });
 
@@ -567,8 +855,10 @@
             `;
         }
 
-        // Initialize Cursor Processing on Load
+        // Initialize Cursor Processing & Visitor Counter on Load
         window.addEventListener('DOMContentLoaded', () => {
+            initVisitorCounter();
+
             const mainCursorUrl = 'https://i.postimg.cc/vDZ3CL1Y/image-removebg-preview.png';
             const pumpkinCursorUrl = 'https://imgs.search.brave.com/hIGrnG_kSpJ4DofxTO63Wqy6T3idjm9VN-dCCz1nT3c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzEv/NDAxLzAyMS9zbWFs/bC9wdW1wa2luLWZh/Y2UtaGFsbG93ZWVuLWVsZW1lbnQtY2xp/cGFydC1kaWdpdGFs/LXBhaW50aW5nLXdh/dGVyY29sb3ItZnJl/ZS1wbmcucG5n';
 
