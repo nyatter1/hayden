@@ -20,6 +20,7 @@
             --glass-border: rgba(255, 255, 255, 0.15);
             --accent-glow: rgba(255, 255, 255, 0.15);
             --accent-color: #ffffff;
+            --icon-filter: invert(1);
         }
 
         body.theme-light {
@@ -33,6 +34,7 @@
             --glass-border: rgba(0, 0, 0, 0.15);
             --accent-glow: rgba(0, 0, 0, 0.1);
             --accent-color: #0f172a;
+            --icon-filter: invert(0);
         }
 
         body.theme-halloween {
@@ -46,6 +48,7 @@
             --glass-border: rgba(255, 140, 0, 0.35);
             --accent-glow: rgba(255, 122, 0, 0.4);
             --accent-color: #ff9d00;
+            --icon-filter: invert(1);
         }
 
         /* DEFAULT INLINE SVG CURSOR FALLBACKS */
@@ -137,7 +140,7 @@
             font-weight: 500;
             outline: none;
             user-select: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid var(--glass-border);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
@@ -147,12 +150,23 @@
             transform: translateY(-1px);
         }
 
+        /* Cleaned Tab Button Styling */
         .glass-tab-btn {
-            opacity: 0.6;
+            opacity: 0.65;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 9999px;
+            padding: 0.6rem 1.25rem;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.25s ease;
         }
 
         .glass-tab-btn:hover {
             opacity: 0.9;
+            background: var(--glass-hover);
+            transform: translateY(-1px);
         }
 
         .glass-tab-btn.active {
@@ -160,9 +174,9 @@
             background: var(--glass-hover);
             border-color: var(--accent-color);
             box-shadow: 
-                0 15px 30px rgba(0, 0, 0, 0.3),
-                inset 0 1px 1px rgba(255, 255, 255, 0.4),
-                0 0 20px var(--accent-glow);
+                0 10px 20px rgba(0, 0, 0, 0.25),
+                inset 0 1px 1px rgba(255, 255, 255, 0.3),
+                0 0 15px var(--accent-glow);
         }
 
         /* Dropdown & Modal Glass Menu */
@@ -185,6 +199,11 @@
             background: var(--glass-hover);
             transform: translateY(-2px);
             border-color: var(--accent-color);
+        }
+
+        /* Icon Inversion Helper for Dark/Light Themes */
+        .theme-icon-invert {
+            filter: var(--icon-filter);
         }
 
         /* Smooth Content Fade Animation */
@@ -230,7 +249,7 @@
                 <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 .895-2 3-2 3 .895 3 2zM9 10l12-3"/>
                 </svg>
-                <span id="currentTrackLabel" class="max-w-[100sm] truncate">Riptide</span>
+                <span id="currentTrackLabel" class="max-w-[100px] truncate">Riptide</span>
                 <svg class="w-3.5 h-3.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                 </svg>
@@ -356,18 +375,18 @@
             coder, writer, editor and youtuber
         </p>
 
-        <!-- SIDE-BY-SIDE TAB BUTTONS -->
+        <!-- CLEAN & FIXED TAB BUTTON NAVIGATION -->
         <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6 sm:mb-8 w-full max-w-2xl">
-            <button id="tabAboutBtn" onclick="switchTab('about')" class="glass-btn glass-tab-btn active !px-3.5 !py-2 text-xs sm:text-sm">
+            <button id="tabAboutBtn" onclick="switchTab('about')" class="glass-tab-btn active">
                 About Me
             </button>
-            <button id="tabWorkingBtn" onclick="switchTab('working')" class="glass-btn glass-tab-btn !px-3.5 !py-2 text-xs sm:text-sm">
+            <button id="tabWorkingBtn" onclick="switchTab('working')" class="glass-tab-btn">
                 What I'm Working On
             </button>
-            <button id="tabTechBtn" onclick="switchTab('tech')" class="glass-btn glass-tab-btn !px-3.5 !py-2 text-xs sm:text-sm">
+            <button id="tabTechBtn" onclick="switchTab('tech')" class="glass-tab-btn">
                 Tech Stack
             </button>
-            <button id="tabSitesBtn" onclick="switchTab('sites')" class="glass-btn glass-tab-btn !px-3.5 !py-2 text-xs sm:text-sm">
+            <button id="tabSitesBtn" onclick="switchTab('sites')" class="glass-tab-btn">
                 Sites I'm On
             </button>
         </div>
@@ -378,7 +397,7 @@
             <!-- ABOUT ME CONTENT -->
             <div id="aboutContent" class="content-fade w-full">
                 <p class="text-base sm:text-lg leading-relaxed font-normal opacity-90">
-                    Hey, I’m Hayden—a 17-year-old developer currently studying animation and game development in college, with my sights set on university next. Outside of code, I’m a YouTuber, writer, and video editor.
+                    Hey, I’m Hayden—a 17-year-old developer and creator. Outside of code, I’m a YouTuber, writer, and video editor.
                 </p>
             </div>
 
@@ -389,33 +408,41 @@
                 </p>
             </div>
 
-            <!-- TECH STACK & TOOLS CONTENT -->
-            <div id="techContent" class="hidden content-fade w-full space-y-4">
+            <!-- TECH STACK & TOOLS CONTENT (EXACT CUSTOM ICONS) -->
+            <div id="techContent" class="hidden content-fade w-full space-y-5">
                 <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider mb-2 opacity-60">Coding & Backend</h4>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">⚡ JavaScript</span>
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🎨 Tailwind CSS</span>
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🔥 Firebase</span>
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">☁️ Cloudinary</span>
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🌐 HTML5 / CSS3</span>
+                    <h4 class="text-xs font-bold uppercase tracking-wider mb-2.5 opacity-60">Coding & Backend</h4>
+                    <div class="flex flex-wrap gap-2.5">
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                            <img src="https://img.icons8.com/?size=100&id=108784&format=png&color=000000" class="w-4 h-4 rounded theme-icon-invert" alt="JavaScript">
+                            JavaScript
+                        </span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                            <img src="https://img.icons8.com/?size=100&id=1045&format=png&color=000000" class="w-4 h-4 rounded theme-icon-invert" alt="CSS3">
+                            CSS
+                        </span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                            <img src="https://img.icons8.com/?size=100&id=62452&format=png&color=000000" class="w-4 h-4 object-contain" alt="Firebase">
+                            Firebase
+                        </span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                            <img src="https://www.svgrepo.com/show/353566/cloudinary.svg" class="w-4 h-4 object-contain" alt="Cloudinary">
+                            Cloudinary
+                        </span>
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                            <img src="https://img.icons8.com/?size=100&id=9nmz9TYzN8iO&format=png&color=000000" class="w-4 h-4 theme-icon-invert" alt="HTML5">
+                            HTML5
+                        </span>
                     </div>
                 </div>
 
                 <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider mb-2 opacity-60">Video Editing & Motion</h4>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🎬 Premiere Pro</span>
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">✨ After Effects</span>
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🖼️ Photoshop</span>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider mb-2 opacity-60">Animation & Game Dev</h4>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">🕹️ 2D & 3D Game Dev</span>
-                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5">✏️ Keyframe Animation</span>
+                    <h4 class="text-xs font-bold uppercase tracking-wider mb-2.5 opacity-60">Video Editing</h4>
+                    <div class="flex flex-wrap gap-2.5">
+                        <span class="tech-badge px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2">
+                            <img src="https://static.vecteezy.com/system/resources/previews/048/759/325/non_2x/capcut-transparent-icon-free-png.png" class="w-4 h-4 object-contain" alt="CapCut">
+                            CapCut
+                        </span>
                     </div>
                 </div>
             </div>
@@ -485,11 +512,11 @@
                 <span>Contact Me</span>
             </button>
 
-            <!-- DEVICE DEDUPLICATED VISITOR BADGE -->
-            <div class="glass-btn !py-2 !px-4 flex items-center gap-2 opacity-80 pointer-events-none">
+            <!-- REAL-TIME FIRESTORE VISITOR BADGE -->
+            <div class="glass-btn !py-2 !px-4 flex items-center gap-2 opacity-90 pointer-events-none">
                 <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="opacity-70">UNIQUE VISITS:</span>
-                <span id="visitorCountText" class="font-bold text-emerald-400">...</span>
+                <span class="opacity-70">LIVE VISITS:</span>
+                <span id="visitorCountText" class="font-bold text-emerald-400">Loading...</span>
             </div>
         </div>
     </main>
@@ -533,6 +560,68 @@
         </div>
     </div>
 
+    <!-- FIRESTORE REAL-TIME VISITOR ENGINE & APP SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, onSnapshot, runTransaction, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // Provided User Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8odsESlcYkI1lH-0cnUBwsP4MgDWMOKw",
+            authDomain: "haydenportfolio-d96ae.firebaseapp.com",
+            projectId: "haydenportfolio-d96ae",
+            storageBucket: "haydenportfolio-d96ae.firebasestorage.app",
+            messagingSenderId: "878514891719",
+            appId: "1:878514891719:web:8e1be343c5a2bba04c87e2",
+            measurementId: "G-HE0ZTBGXQ7"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const statsRef = doc(db, "stats", "visits");
+
+        // 1. Listen for Real-Time Live Visits Counter
+        onSnapshot(statsRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const data = snapshot.data();
+                const total = data.totalVisits || 1;
+                document.getElementById('visitorCountText').innerText = Number(total).toLocaleString();
+            } else {
+                // Initialize collection document if first run
+                setDoc(statsRef, { totalVisits: 1 });
+                document.getElementById('visitorCountText').innerText = "1";
+            }
+        }, (error) => {
+            console.error("Firestore onSnapshot error:", error);
+            document.getElementById('visitorCountText').innerText = "Unavailable";
+        });
+
+        // 2. Safely register unique device visit using atomic transaction
+        async function registerUniqueVisit() {
+            const hasRegistered = localStorage.getItem('visitor_registered_v1');
+            if (hasRegistered) return;
+
+            try {
+                await runTransaction(db, async (transaction) => {
+                    const statsDoc = await transaction.get(statsRef);
+                    if (!statsDoc.exists()) {
+                        transaction.set(statsRef, { totalVisits: 1 });
+                    } else {
+                        const newCount = (statsDoc.data().totalVisits || 0) + 1;
+                        transaction.update(statsRef, { totalVisits: newCount });
+                    }
+                });
+                localStorage.setItem('visitor_registered_v1', 'true');
+            } catch (err) {
+                console.warn("Failed to increment visit count:", err);
+            }
+        }
+
+        registerUniqueVisit();
+    </script>
+
     <script>
         // Enter Page Transition
         function triggerEnter() {
@@ -552,29 +641,6 @@
                 profileStage.classList.remove('hidden');
                 profileStage.classList.add('fade-in');
             }, 600);
-        }
-
-        /* --- UNIQUE DEVICE VISITOR COUNTER ENGINE --- */
-        function initVisitorCounter() {
-            // Generate or fetch persistent device fingerprint ID
-            let deviceId = localStorage.getItem('hayden_portfolio_device_id');
-            if (!deviceId) {
-                deviceId = 'dev_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
-                localStorage.setItem('hayden_portfolio_device_id', deviceId);
-            }
-
-            // Global simulation counter backed by LocalStorage deduplication
-            let totalVisits = parseInt(localStorage.getItem('hayden_portfolio_global_visits') || '142', 10);
-            let hasVisited = localStorage.getItem('hayden_portfolio_visited_' + deviceId);
-
-            if (!hasVisited) {
-                // New unique device detected -> Increment count
-                totalVisits += 1;
-                localStorage.setItem('hayden_portfolio_global_visits', totalVisits.toString());
-                localStorage.setItem('hayden_portfolio_visited_' + deviceId, 'true');
-            }
-
-            document.getElementById('visitorCountText').innerText = totalVisits.toLocaleString();
         }
 
         /* --- CONTACT MODAL LOGIC --- */
@@ -855,10 +921,8 @@
             `;
         }
 
-        // Initialize Cursor Processing & Visitor Counter on Load
+        // Initialize Cursor Processing on Load
         window.addEventListener('DOMContentLoaded', () => {
-            initVisitorCounter();
-
             const mainCursorUrl = 'https://i.postimg.cc/vDZ3CL1Y/image-removebg-preview.png';
             const pumpkinCursorUrl = 'https://imgs.search.brave.com/hIGrnG_kSpJ4DofxTO63Wqy6T3idjm9VN-dCCz1nT3c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzEv/NDAxLzAyMS9zbWFs/bC9wdW1wa2luLWZh/Y2UtaGFsbG93ZWVuLWVsZW1lbnQtY2xp/cGFydC1kaWdpdGFs/LXBhaW50aW5nLXdh/dGVyY29sb3ItZnJl/ZS1wbmcucG5n';
 
