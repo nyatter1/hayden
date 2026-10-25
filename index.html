@@ -184,77 +184,77 @@
             to { opacity: 1; transform: translateY(0); filter: blur(0px); }
         }
 
-        /* Dynamic Text Glow Effect */
-        .text-shimmer {
-            color: var(--text-main);
-            transition: color 0.5s ease, text-shadow 0.5s ease;
-        }
+    <!-- TOP RIGHT THEME & AUDIO SELECTOR -->
+    <div class="fixed top-6 right-6 z-30 flex items-center gap-3">
+        
+        <!-- AUDIO CONTROLLER CLUSTER -->
+        <div class="relative flex flex-col items-center">
+            <div class="glass-btn flex items-center gap-2 !py-2 !px-3">
+                <!-- VOLUME DOWN BUTTON -->
+                <button onclick="changeVolume(-0.1)" class="opacity-70 hover:opacity-100 transition-opacity p-1 focus:outline-none" title="Decrease Volume">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4"/>
+                    </svg>
+                </button>
 
-        body.theme-halloween .text-shimmer {
-            text-shadow: 0 0 20px rgba(255, 122, 0, 0.6), 0 0 40px rgba(255, 122, 0, 0.3);
-        }
+                <!-- MUTE / UNMUTE BUTTON -->
+                <button id="muteBtn" onclick="toggleMute()" class="opacity-80 hover:opacity-100 transition-opacity px-1 focus:outline-none" title="Toggle Mute">
+                    <!-- UNMUTED ICON -->
+                    <svg id="iconUnmuted" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/>
+                    </svg>
+                    <!-- MUTED ICON -->
+                    <svg id="iconMuted" class="w-4 h-4 hidden text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" stroke-dasharray="2 2"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>
+                    </svg>
+                </button>
 
-        /* Stage Transitions */
-        .fade-out {
-            animation: fadeOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+                <!-- VOLUME UP BUTTON -->
+                <button onclick="changeVolume(0.1)" class="opacity-70 hover:opacity-100 transition-opacity p-1 focus:outline-none" title="Increase Volume">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                    </svg>
+                </button>
+            </div>
 
-        .fade-in {
-            animation: fadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes fadeOut {
-            0% { opacity: 1; transform: scale(1); filter: blur(0px); }
-            100% { opacity: 0; transform: scale(1.1); filter: blur(20px); pointer-events: none; }
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(10px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0px); }
-        }
-
-        /* Canvas for Falling Pumpkins */
-        #pumpkinCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 5;
-            display: none;
-        }
-    </style>
-</head>
-<body class="h-full flex items-center justify-center p-4">
-
-    <!-- CANVAS FOR FALLING PUMPKINS -->
-    <canvas id="pumpkinCanvas"></canvas>
-
-    <!-- TOP RIGHT THEME SELECTOR -->
-    <div class="fixed top-6 right-6 z-30">
-        <button id="themesBtn" onclick="toggleThemeMenu()" class="glass-btn flex items-center gap-2">
-            <span>Themes</span>
-            <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-        </button>
-
-        <!-- THEME DROPDOWN -->
-        <div id="themeMenu" class="hidden absolute right-0 mt-3 w-56 rounded-2xl p-2 glass-menu transition-all">
-            <button onclick="setTheme('dark')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-white/10 flex items-center justify-between">
-                <span>Dark Mode</span>
-                <span id="check-dark" class="text-xs opacity-80">✓</span>
-            </button>
-            <button onclick="setTheme('light')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-white/10 flex items-center justify-between">
-                <span>Light Mode</span>
-                <span id="check-light" class="text-xs opacity-80 hidden">✓</span>
-            </button>
-            <button onclick="setTheme('halloween')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-orange-500/20 text-orange-400 font-medium flex items-center justify-between">
-                <span>Halloween 🎃</span>
-                <span id="check-halloween" class="text-xs opacity-80 hidden">✓</span>
-            </button>
+            <!-- TV-STYLE VOLUME HUD POPUP -->
+            <div id="volumeHud" class="absolute top-12 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-[-4px] glass-menu px-3 py-1 rounded-xl text-xs font-mono font-semibold flex items-center gap-2 shadow-xl whitespace-nowrap">
+                <span class="text-[10px] opacity-70">VOL</span>
+                <span id="volumeHudText" class="text-xs">50%</span>
+            </div>
         </div>
+
+        <!-- THEME MENU BUTTON -->
+        <div class="relative">
+            <button id="themesBtn" onclick="toggleThemeMenu()" class="glass-btn flex items-center gap-2">
+                <span>Themes</span>
+                <svg class="w-4 h-4 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </button>
+
+            <!-- THEME DROPDOWN -->
+            <div id="themeMenu" class="hidden absolute right-0 mt-3 w-56 rounded-2xl p-2 glass-menu transition-all">
+                <button onclick="setTheme('dark')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-white/10 flex items-center justify-between">
+                    <span>Dark Mode</span>
+                    <span id="check-dark" class="text-xs opacity-80">✓</span>
+                </button>
+                <button onclick="setTheme('light')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-white/10 flex items-center justify-between">
+                    <span>Light Mode</span>
+                    <span id="check-light" class="text-xs opacity-80 hidden">✓</span>
+                </button>
+                <button onclick="setTheme('halloween')" class="w-full text-left px-4 py-2.5 rounded-xl text-sm hover:bg-orange-500/20 text-orange-400 font-medium flex items-center justify-between">
+                    <span>Halloween 🎃</span>
+                    <span id="check-halloween" class="text-xs opacity-80 hidden">✓</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HIDDEN YOUTUBE BACKGROUND AUDIO PLAYER IFRAME -->
+    <div class="hidden">
+        <div id="youtubePlayer"></div>
     </div>
 
     <!-- STAGE 1: ENTER BUTTON -->
@@ -309,11 +309,110 @@
 
             landingStage.classList.add('fade-out');
 
+            // Play Music on Enter if YouTube API is ready
+            if (player && typeof player.playVideo === 'function') {
+                player.playVideo();
+                player.unMute();
+            }
+
             setTimeout(() => {
                 landingStage.style.display = 'none';
                 profileStage.classList.remove('hidden');
                 profileStage.classList.add('fade-in');
             }, 600);
+        }
+
+        /* --- YOUTUBE BACKGROUND AUDIO ENGINE --- */
+        let player;
+        let isMuted = false;
+        let currentVolume = 50;
+        let hudTimeout = null;
+
+        // Load YouTube IFrame Player API
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtubePlayer', {
+                height: '0',
+                width: '0',
+                videoId: 'lYoWuaw5nSk', // Vance Joy - Riptide
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'lYoWuaw5nSk',
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            event.target.setVolume(currentVolume);
+        }
+
+        function toggleMute() {
+            if (!player || typeof player.isMuted !== 'function') return;
+
+            isMuted = !isMuted;
+            const iconUnmuted = document.getElementById('iconUnmuted');
+            const iconMuted = document.getElementById('iconMuted');
+
+            if (isMuted) {
+                player.mute();
+                iconUnmuted.classList.add('hidden');
+                iconMuted.classList.remove('hidden');
+                showVolumeHud('MUTED');
+            } else {
+                player.unMute();
+                iconUnmuted.classList.remove('hidden');
+                iconMuted.classList.add('hidden');
+                showVolumeHud(currentVolume + '%');
+            }
+        }
+
+        function changeVolume(delta) {
+            if (!player || typeof player.getVolume !== 'function') return;
+
+            let newVol = currentVolume + (delta * 100);
+            newVol = Math.max(0, Math.min(100, Math.round(newVol)));
+            currentVolume = newVol;
+
+            player.setVolume(currentVolume);
+
+            if (currentVolume === 0) {
+                isMuted = true;
+                document.getElementById('iconUnmuted').classList.add('hidden');
+                document.getElementById('iconMuted').classList.remove('hidden');
+            } else if (isMuted) {
+                isMuted = false;
+                player.unMute();
+                document.getElementById('iconUnmuted').classList.remove('hidden');
+                document.getElementById('iconMuted').classList.add('hidden');
+            }
+
+            showVolumeHud(currentVolume + '%');
+        }
+
+        function showVolumeHud(text) {
+            const hud = document.getElementById('volumeHud');
+            const hudText = document.getElementById('volumeHudText');
+
+            hudText.innerText = text;
+            hud.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-4px]');
+            hud.classList.add('opacity-100', 'translate-y-0');
+
+            if (hudTimeout) clearTimeout(hudTimeout);
+
+            hudTimeout = setTimeout(() => {
+                hud.classList.remove('opacity-100', 'translate-y-0');
+                hud.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-4px]');
+            }, 1200);
         }
 
         // Tab Switching Logic
