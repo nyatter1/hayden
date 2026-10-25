@@ -48,7 +48,7 @@
             --accent-color: #ff9d00;
         }
 
-        /* DEFAULT INLINE SVG CURSOR FALLBACKS WHILE CANVAS CONVERTS PNGS */
+        /* DEFAULT INLINE SVG CURSOR FALLBACKS */
         body, body *, button, a {
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="6" fill="%23ffffff" stroke="%23000000" stroke-width="2"/></svg>') 16 16, auto;
         }
@@ -368,7 +368,7 @@
                 document.body.classList.add('theme-light');
                 document.getElementById('check-light').classList.remove('hidden');
                 stopPumpkinRain();
-                applyCustomCursor(standardCursorDataUrl);
+                applyCustomCursor(darkOriginalCursorDataUrl);
             } else if (theme === 'halloween') {
                 document.body.classList.add('theme-halloween');
                 document.getElementById('check-halloween').classList.remove('hidden');
@@ -378,17 +378,18 @@
                 document.body.classList.add('theme-dark');
                 document.getElementById('check-dark').classList.remove('hidden');
                 stopPumpkinRain();
-                applyCustomCursor(standardCursorDataUrl);
+                applyCustomCursor(whiteConvertedCursorDataUrl || darkOriginalCursorDataUrl);
             }
 
             document.getElementById('themeMenu').classList.add('hidden');
         }
 
-        /* --- DYNAMIC CUSTOM CURSOR ENGINE --- */
-        let standardCursorDataUrl = null;
+        /* --- DYNAMIC CANVAS CURSOR ENGINE & WHITE PIXEL CONVERSION --- */
+        let darkOriginalCursorDataUrl = null;
+        let whiteConvertedCursorDataUrl = null;
         let halloweenCursorDataUrl = null;
 
-        function prepareCustomCursor(url, callback) {
+        function prepareCustomCursor(url, makeWhite, callback) {
             const img = new Image();
             img.crossOrigin = 'Anonymous';
             img.src = url;
@@ -399,14 +400,33 @@
                 tempCanvas.height = 32;
                 const tempCtx = tempCanvas.getContext('2d');
 
-                // Draw and scale down to 32x32 for guaranteed CSS custom cursor rendering
+                // Draw and scale down to 32x32 for CSS cursor standard
                 tempCtx.drawImage(img, 0, 0, 32, 32);
+
+                if (makeWhite) {
+                    try {
+                        const imgData = tempCtx.getImageData(0, 0, 32, 32);
+                        const data = imgData.data;
+                        for (let i = 0; i < data.length; i += 4) {
+                            // If pixel is not fully transparent, force color to pure white (255, 255, 255)
+                            if (data[i + 3] > 20) {
+                                data[i] = 255;     // Red
+                                data[i + 1] = 255; // Green
+                                data[i + 2] = 255; // Blue
+                            }
+                        }
+                        tempCtx.putImageData(imgData, 0, 0);
+                    } catch (err) {
+                        console.warn('Canvas pixel manipulation blocked due to CORS restriction, using original cursor.');
+                    }
+                }
+
                 const dataUrl = tempCanvas.toDataURL('image/png');
                 callback(dataUrl);
             };
 
             img.onerror = () => {
-                console.warn('Could not process custom cursor URL directly, fallback SVG active.');
+                console.warn('Failed to load image for custom cursor:', url);
             };
         }
 
@@ -428,18 +448,25 @@
 
         // Initialize Cursor Processing on Load
         window.addEventListener('DOMContentLoaded', () => {
-            prepareCustomCursor('https://i.postimg.cc/vDZ3CL1Y/image-removebg-preview.png', (dataUrl) => {
-                standardCursorDataUrl = dataUrl;
-                if (!document.body.classList.contains('theme-halloween')) {
-                    applyCustomCursor(standardCursorDataUrl);
+            const mainCursorUrl = 'https://i.postimg.cc/vDZ3CL1Y/image-removebg-preview.png';
+            const pumpkinCursorUrl = 'https://imgs.search.brave.com/hIGrnG_kSpJ4DofxTO63Wqy6T3idjm9VN-dCCz1nT3c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzEv/NDAxLzAyMS9zbWFs/bC9wdW1wa2luLWZh/Y2UtaGFsbG93ZWVuLWVsZW1lbnQtY2xp/cGFydC1kaWdpdGFs/LXBhaW50aW5nLXdh/dGVyY29sb3ItZnJl/ZS1wbmcucG5n';
+
+            // Generate White Cursor for Dark Mode
+            prepareCustomCursor(mainCursorUrl, true, (dataUrl) => {
+                whiteConvertedCursorDataUrl = dataUrl;
+                if (!document.body.classList.contains('theme-light') && !document.body.classList.contains('theme-halloween')) {
+                    applyCustomCursor(whiteConvertedCursorDataUrl);
                 }
             });
 
-            prepareCustomCursor('https://imgs.search.brave.com/hIGrnG_kSpJ4DofxTO63Wqy6T3idjm9VN-dCCz1nT3c/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzEv/NDAxLzAyMS9zbWFs/bC9wdW1wa2luLWZh/Y2UtaGFsbG93ZWVuLWVsZW1lbnQtY2xp/cGFydC1kaWdpdGFs/LXBhaW50aW5nLXdh/dGVyY29sb3ItZnJl/ZS1wbmcucG5n', (dataUrl) => {
+            // Generate Original Dark Cursor for Light Mode
+            prepareCustomCursor(mainCursorUrl, false, (dataUrl) => {
+                darkOriginalCursorDataUrl = dataUrl;
+            });
+
+            // Generate Pumpkin Cursor for Halloween Mode
+            prepareCustomCursor(pumpkinCursorUrl, false, (dataUrl) => {
                 halloweenCursorDataUrl = dataUrl;
-                if (document.body.classList.contains('theme-halloween')) {
-                    applyCustomCursor(halloweenCursorDataUrl);
-                }
             });
         });
 
